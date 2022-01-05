@@ -1,8 +1,11 @@
+//import des logiciels npm
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+//import du modèle
 const User = require('../models/User');
 
+//inscription
 exports.signup = (req, res, next) => {
     console.log(req);
     bcrypt.hash(req.body.password, 10)
@@ -13,14 +16,12 @@ exports.signup = (req, res, next) => {
       });
       user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-        .catch((error) => {
-          console.log(error);
-          res.status(400).json({ error })
-        });
+        .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
 };
 
+//connection
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
     .then(user => {
